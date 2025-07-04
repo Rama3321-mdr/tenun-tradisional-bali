@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warisan Tenun Bali - Jelajahi Keindahan Kain Tradisional</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 text-white">
+
+    <!-- Ganti 'URL_MUSIK_RINDIK_ANDA.mp3' dengan link file audio Anda -->
+    <audio id="background-music" loop>
+        <source src="Rindik bali mp3 - Tabuh Rindik Bali - SoundLoadMate.com.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <div id="start-overlay" class="fixed inset-0 bg-gray-900 z-[100] flex flex-col items-center justify-center text-center p-4">
+        <i class="fas fa-spa text-6xl text-yellow-400 mb-6 animate-pulse"></i>
+        <h1 class="text-4xl font-lora text-white mb-4">Selamat Datang di Warisan Tenun Bali</h1>
+        <p class="text-gray-300 mb-8 max-w-xl">Untuk pengalaman terbaik dengan alunan musik Bali, silakan klik untuk memulai.</p>
+        <button id="enter-website-btn" class="btn-jelajahi text-lg font-bold py-3 px-8 rounded-full shadow-lg">
+            Masuk ke Website
+        </button>
+    </div>
+
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div id="progress-bar-container" class="fixed top-0 left-0 w-full h-1 bg-gray-700 z-50">
+        <div id="progress-bar" class="h-full" style="width: 0%;"></div>
+    </div>
+    <div id="progress-text" class="fixed top-2 left-3 text-xs z-50 font-semibold text-white mix-blend-difference">0% dijelajahi</div>
+
+    <header id="app-header" class="fixed top-0 left-0 w-full p-4 z-40 bg-transparent transition-all duration-300 hidden">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="header-left-wrapper">
+                <button id="back-to-main" class="text-white hover:text-yellow-400 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali ke Menu
+                </button>
+            </div>
+            <div class="flex items-center space-x-4">
+                <!-- REVISI: Kontrol musik kini memiliki slider volume -->
+                <div id="music-controls-container" class="relative flex items-center group">
+                    <button id="music-toggle-btn" class="text-white hover:text-yellow-400 transition-colors text-xl relative">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                    <input type="range" id="volume-slider" min="0" max="100" value="80" class="ml-2">
+                </div>
+                <button id="view-favorites-btn" class="text-white hover:text-yellow-400 transition-colors">
+                    <i class="fas fa-star mr-2"></i> Favorit (<span id="favorite-count">0</span>)
+                </button>
+                <button id="finish-exploring-btn" class="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                    Selesai Menjelajah
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="landing-page" class="page h-screen w-screen grid place-items-center text-center landing-bg p-4">
+            <div>
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 font-lora drop-shadow-lg">Warisan Tenun Bali</h1>
+                <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto drop-shadow-md">Sebuah Perjalanan Interaktif Menyingkap Keindahan Kain Tradisional Pulau Dewata</p>
+                <button id="start-btn" class="btn-jelajahi text-lg font-bold py-3 px-8 rounded-full shadow-lg">
+                    Mulai Jelajahi
+                </button>
+            </div>
+        </section>
+
+        <section id="main-page" class="page container mx-auto px-4 py-24">
+            <div class="slider-container relative w-full max-w-5xl mx-auto rounded-lg shadow-2xl mb-12">
+                <div class="slider-wrapper"></div>
+                <button class="slider-prev absolute top-1/2 left-4 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-next absolute top-1/2 right-4 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all"><i class="fas fa-chevron-right"></i></button>
+                <div class="slider-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2"></div>
+            </div>
+            <div id="filter-section" class="mb-12 p-6 bg-gray-800 rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold mb-4 text-yellow-400">Saring Koleksi Tenun</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div id="filter-daerah"></div>
+                    <div id="filter-warna"></div>
+                    <div id="filter-fungsi"></div>
+                    <div id="filter-motif"></div>
+                </div>
+            </div>
+            <div id="tenun-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </section>
+
+        <section id="detail-page" class="page container mx-auto px-4 py-24"></section>
+
+        <section id="favorites-page" class="page container mx-auto px-4 py-24">
+            <h2 class="text-4xl font-bold text-center mb-8 font-lora text-yellow-400">Tenun Favorit Anda</h2>
+            <div id="favorites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            <p id="no-favorites-text" class="text-center text-gray-400 text-xl hidden">Anda belum menandai tenun favorit.</p>
+        </section>
+
+        <section id="quiz-page" class="page grid place-items-center h-screen p-4">
+            <div id="quiz-container" class="w-full max-w-2xl mx-auto bg-gray-800 p-8 rounded-2xl shadow-2xl"></div>
+        </section>
+
+        <section id="closing-page" class="page h-screen w-screen grid place-items-center text-center bg-gray-900 p-4">
+            <div>
+                <i class="fas fa-spa text-6xl text-yellow-400 mb-6"></i>
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 font-lora">Terima Kasih</h1>
+                <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Terima kasih telah ikut melestarikan budaya Bali melalui penjelajahan ini. Semoga perjalanan Anda berkesan.</p>
+                <button id="replay-btn" class="btn-jelajahi text-lg font-bold py-3 px-8 rounded-full shadow-lg">
+                    Jelajahi Ulang
+                </button>
+            </div>
+        </section>
+    </main>
+    
+    <div id="guide-modal" class="modal fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 opacity-0 invisible">
+        <div class="modal-content bg-gray-800 rounded-lg shadow-2xl p-8 max-w-lg w-full transform -translate-y-10 scale-95">
+            <h2 class="text-3xl font-bold mb-4 font-lora text-yellow-400">Panduan Jelajah</h2>
+            <p class="mb-6 text-gray-300">Selamat datang di Warisan Tenun Bali! Berikut cara menikmati pengalaman ini:</p>
+            <ul class="space-y-3 text-left text-gray-300 list-disc list-inside mb-8">
+                <li><strong class="text-yellow-500">Jelajahi:</strong> Klik kotak tenun di halaman utama untuk melihat detailnya.</li>
+                <li><strong class="text-yellow-500">Favoritkan:</strong> Klik ikon <i class="fas fa-star text-yellow-400"></i> untuk menyimpan tenun yang Anda sukai.</li>
+                <li><strong class="text-yellow-500">Tanya AI:</strong> Gunakan ikon <i class="fas fa-comments"></i> di pojok kanan bawah untuk bertanya pada asisten AI kami.</li>
+                <li><strong class="text-yellow-500">Uji Pengetahuan:</strong> Ikuti kuis singkat di akhir penjelajahan Anda.</li>
+            </ul>
+            <div class="text-center">
+                <button id="skip-guide-btn" class="bg-yellow-500 text-gray-900 font-bold py-2 px-6 rounded-lg hover:bg-yellow-600 transition-colors">Mengerti, Lanjutkan!</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="chatbot-container">
+        <div id="chatbot-header">
+            <span>Asisten Tenun AI</span>
+            <button id="close-chatbot-btn" class="text-xl">&times;</button>
+        </div>
+        <div id="chatbot-messages"></div>
+        <form id="chatbot-input-form">
+            <input type="text" id="chatbot-input" placeholder="Tanya tentang tenun Bali..." autocomplete="off">
+            <button id="chatbot-send-btn" type="submit">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+    <div id="chatbot-toggle">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <footer id="app-footer" class="text-center p-6 mt-12">
+        <p class="text-gray-400">&copy; 2024 Warisan Tenun Bali. Sebuah Proyek Pelestarian Budaya Digital.</p>
+        <p class="text-sm text-gray-500 mt-2">Dibuat Oleh Dwi & Rosyid</p>
+    </footer>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
